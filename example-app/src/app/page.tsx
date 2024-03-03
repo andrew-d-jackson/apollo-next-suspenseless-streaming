@@ -19,7 +19,7 @@ const gqlQuery = gql`
     }
   }
 `;
-export const dynamic = "force-dynamic";
+
 export default function Home() {
   const queryData = useQuery(gqlQuery, {
     variables: { limit: 10, offset: 0 },

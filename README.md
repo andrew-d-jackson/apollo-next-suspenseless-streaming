@@ -10,6 +10,8 @@ Just use this package instead of `@apollo/client` everywhere in your app, it sho
 
 ## Example App
 
+The example app is live here: https://apollo-next-suspenseless-streaming.vercel.app/
+
 To run the exaple app cd into this folder:
 
 - `yarn`

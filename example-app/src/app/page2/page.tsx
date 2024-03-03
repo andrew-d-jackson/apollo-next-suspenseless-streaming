@@ -27,7 +27,7 @@ export default function Page() {
     </Suspense>
   );
 }
-export const dynamic = "force-dynamic";
+
 function PageInner() {
   const queryData = useQuery(gqlQuery);
 

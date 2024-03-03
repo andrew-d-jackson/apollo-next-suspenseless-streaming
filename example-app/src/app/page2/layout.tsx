@@ -16,8 +16,6 @@ const gqlQuery = gql`
   }
 `;
 
-export const dynamic = "force-dynamic";
-
 export default function PaegLayout({
   children,
 }: Readonly<{
