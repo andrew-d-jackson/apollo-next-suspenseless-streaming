@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Suspense, lazy } from "react";
-import { gql, useQuery } from "../../../../src";
+import { gql, useQuery } from "apollo-next-suspenseless-streaming";
 import Link from "next/link";
 
 const LazyComponent = lazy(() => import("./lazyComponent"));

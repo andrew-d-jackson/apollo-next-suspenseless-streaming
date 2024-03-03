@@ -1,6 +1,6 @@
 "use client";
 
-import { gql, useQuery } from "../../../src";
+import { gql, useQuery } from "apollo-next-suspenseless-streaming";
 import Link from "next/link";
 
 const gqlQuery = gql`

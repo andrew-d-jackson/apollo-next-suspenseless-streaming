@@ -1,6 +1,6 @@
 "use client";
 
-import { gql, useQuery } from "../../../../src";
+import { gql, useQuery } from "apollo-next-suspenseless-streaming";
 
 const gqlQuery = gql`
   query berries {
