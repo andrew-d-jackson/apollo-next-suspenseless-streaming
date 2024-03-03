@@ -21,7 +21,7 @@ Now open localhost:3000 in the browser, you'll notice that the ui renders in a l
 
 ## Rationale
 
-Streaming data is really cool: it allows us to ship ui to the user super fast and before the data is ready, but doesn't need the client to send us another request to start fetching that data. We get UI quick and we get the data quick. The way that almost everyone in the react world is doing this is by using suspense boundaries, but suspense has a major problem: it colocates the data fetching with the ui. In the old world where we had `{data, loading, error} = useSomeQuery()` we could do whatever we want with the state of the query without having to affect any ui. If we wanted to have a query at the very root of our vdom and pass the data/loading state down to multiple places at the bottom of the vdom we could do that. With suspense this gets problematic because the whole section of the tree where the query is will need to be suspended, and you end up writing very complicated fallback components or having complicated transition logic. When you combine multiple queries with multiple different loading states in a page it can get very messy. In my opinion, the `{data, loading, error} = useSomeQuery()` is much simpler and a better DX. I don't understand why we can't use it and still stream.
+Streaming data is really cool: it allows us to ship ui to the user super fast and before the data is ready, but doesn't need the client to send us another request to start fetching that data. We get UI quick and we get the data quick. The way that almost everyone in the react world is doing this is by using suspense boundaries, but suspense has a major problem: it colocates the data fetching with the ui. In the old world where we had `{data, loading, error} = useSomeQuery()` we could do whatever we want with the state of the query without having to affect any ui. WWe workaround this by having things like `useReadQuery` and `useTransition` but they all feel very hacky to me and when you combine multiple queries with multiple different loading states in a page it can get very messy. In my opinion, the `{data, loading, error} = useSomeQuery()` is much simpler and a better DX. I think we can keep that and still stream.
 
 The other rationale is that if you have an existing SPA it can be quite an undertaking to convert all your apollo queries to use suspense if you want the benefits of streaming. It would be great if we could get the benefits of streaming without having to change any code.
 
@@ -40,6 +40,10 @@ Timeline:
 - The client will then update it's cache to the one streamed down, rerender the ui and then switch to regular SPA behaviour.
 
 ## Future improvements that could be made
+
+This probably doesn't play very well with mutliple suspense boundaries on a page already, but I think it could be made to work.
+
+At the moment we stream the whole cahce over at once, this could be updated to stream results as they arrive which would make it play nicer if there is one long query on a page.
 
 Ideally i'd like to be able to specify in the query options when a query should get data and render: something like `{ renderPolicy: 'stream' | 'ssr' | 'client' }`. `stream` would mean that the query should be streamed as it now is in this package. `ssr` would mean that the query should be fetched and rendered during SSR for SEO reasons. `client` would mean that the query is never ran on the server and would be performed on the client once hydrated.
 
