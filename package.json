@@ -1,0 +1,16 @@
+{
+  "name": "apollo-next-suspenseless-streaming",
+  "license": "MIT",
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@apollo/client": "3.9.5",
+    "graphql": "*",
+    "@types/react": "18.2.61",
+    "@types/react-dom": "18.2.19",
+    "react": "18.2.0"
+  },
+  "peerDependencies": {
+    "@apollo/client": "*",
+    "react": "*"
+  }
+}
