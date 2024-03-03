@@ -28,7 +28,7 @@ export default function Page() {
   );
 }
 
-export function PageInner() {
+function PageInner() {
   const queryData = useQuery(gqlQuery);
 
   return (
