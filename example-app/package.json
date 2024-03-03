@@ -13,7 +13,8 @@
     "react-dom": "^18",
     "next": "14.1.1",
     "@apollo/client": "3.9.5",
-    "graphql": "16.8.1"
+    "graphql": "16.8.1",
+    "apollo-next-suspenseless-streaming": "0.0.1"
   },
   "devDependencies": {
     "typescript": "^5",

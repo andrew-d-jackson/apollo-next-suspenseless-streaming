@@ -152,6 +152,11 @@
   dependencies:
     tslib "^2.3.0"
 
+apollo-next-suspenseless-streaming@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/apollo-next-suspenseless-streaming/-/apollo-next-suspenseless-streaming-0.0.1.tgz#f841f77579d64016aebe55555fe592bb4115539c"
+  integrity sha512-5ppfj7FezOcXkWBlHAhO5z2o/G8WZYzrNRjIkd1F2Lj7IPMd5FVb6sk0UuFOppVoGZwl4OaLkMmTwgbrecar2A==
+
 busboy@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"

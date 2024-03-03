@@ -1,6 +1,6 @@
 "use client";
 
-import { gql, useQuery } from "../../../src";
+import { gql, useQuery } from "apollo-next-suspenseless-streaming";
 import Link from "next/link";
 
 const gqlQuery = gql`
@@ -64,7 +64,7 @@ export default function Home() {
         {queryData.data ? (
           <ul>
             {queryData.data.pokemons.results.map((p: { name: string }) => (
-              <li>{p.name}</li>
+              <li key={p.name}>{p.name}</li>
             ))}
           </ul>
         ) : null}
