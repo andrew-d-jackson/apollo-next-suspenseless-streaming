@@ -1,11 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-} from "apollo-next-suspenseless-streaming";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "../../../src";
 
 export function GraphqlProvider({ children }: React.PropsWithChildren) {
   const [client] = useMemo(() => {

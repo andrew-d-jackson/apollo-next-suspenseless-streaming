@@ -51,17 +51,24 @@ function StreamPipe({
 
   React.use(
     typeof window === "undefined"
-      ? new Promise((res) => {
+      ? new Promise(async (res) => {
           if (hasAlreadyRanStreamPromise.current) {
             return res(null);
           }
           hasAlreadyRanStreamPromise.current = true;
 
-          setTimeout(() => {
-            if (!hasAtleastOneQueryStarted) {
-              return res(null);
-            }
-          }, 0);
+          const shouldEnd = await new Promise((res) =>
+            setTimeout(() => {
+              if (!hasAtleastOneQueryStarted.current) {
+                return res(true);
+              }
+              return res(false);
+            }, 0)
+          );
+
+          if (shouldEnd) {
+            return res(null);
+          }
 
           insertHtml?.(() =>
             React.createElement("script", {

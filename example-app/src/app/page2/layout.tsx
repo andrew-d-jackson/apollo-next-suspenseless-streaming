@@ -1,6 +1,6 @@
 "use client";
 
-import { gql, useQuery } from "apollo-next-suspenseless-streaming";
+import { gql, useQuery } from "../../../../src";
 
 const gqlQuery = gql`
   query berries {
@@ -15,6 +15,8 @@ const gqlQuery = gql`
     }
   }
 `;
+
+export const dynamic = "force-dynamic";
 
 export default function PaegLayout({
   children,

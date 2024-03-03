@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Suspense, lazy } from "react";
-import { gql, useQuery } from "apollo-next-suspenseless-streaming";
+import { gql, useQuery } from "../../../../src";
 import Link from "next/link";
 
 const LazyComponent = lazy(() => import("./lazyComponent"));
@@ -27,7 +27,7 @@ export default function Page() {
     </Suspense>
   );
 }
-
+export const dynamic = "force-dynamic";
 function PageInner() {
   const queryData = useQuery(gqlQuery);
 

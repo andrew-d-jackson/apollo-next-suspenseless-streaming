@@ -1,6 +1,6 @@
 "use client";
 
-import { gql, useQuery } from "apollo-next-suspenseless-streaming";
+import { gql, useQuery } from "../../../src";
 import Link from "next/link";
 
 const gqlQuery = gql`
@@ -19,7 +19,7 @@ const gqlQuery = gql`
     }
   }
 `;
-
+export const dynamic = "force-dynamic";
 export default function Home() {
   const queryData = useQuery(gqlQuery, {
     variables: { limit: 10, offset: 0 },

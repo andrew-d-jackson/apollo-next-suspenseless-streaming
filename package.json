@@ -1,7 +1,7 @@
 {
   "name": "apollo-next-suspenseless-streaming",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "build": "tsup src/index.ts --dts --format esm,cjs,iife"
   },
