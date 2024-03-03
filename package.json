@@ -1,15 +1,25 @@
 {
   "name": "apollo-next-suspenseless-streaming",
   "license": "MIT",
-  "main": "src/index.ts",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs,iife"
+  },
+  "main": "./dist/main.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "devDependencies": {
     "@apollo/client": "3.9.5",
-    "graphql": "*",
+    "graphql": "16.8.1",
+    "next": "14.1.1",
     "@types/react": "18.2.61",
     "@types/react-dom": "18.2.19",
-    "react": "18.2.0"
+    "react": "18.2.0",
+    "typescript": "5.3.3",
+    "tsup": "8.0.2"
   },
   "peerDependencies": {
+    "next": "*",
     "@apollo/client": "*",
     "react": "*"
   }

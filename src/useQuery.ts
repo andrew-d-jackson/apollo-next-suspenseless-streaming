@@ -23,7 +23,7 @@ export const useQuery = <
   if (typeof window !== "undefined") {
     return original_useQuery(
       query,
-      streamingContext.isHydrated()
+      streamingContext.hasStreamCompleted()
         ? options
         : { ...options, fetchPolicy: "cache-only" }
     );
@@ -31,12 +31,15 @@ export const useQuery = <
 
   const client = useApolloClient();
   streamingContext.markStartedQuery();
-  client
-    .query({ query: query, variables: options?.variables })
-    .catch(() => {})
-    .finally(() => {
-      streamingContext.markCompletedQuery();
-    });
+
+  if (!options?.skip) {
+    client
+      .query({ query: query, variables: options?.variables })
+      .catch(() => {})
+      .finally(() => {
+        streamingContext.markCompletedQuery();
+      });
+  }
 
   return {
     data: undefined,

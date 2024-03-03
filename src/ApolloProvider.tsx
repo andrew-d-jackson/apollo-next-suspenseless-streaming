@@ -29,30 +29,39 @@ const generateCacheTransferScript = (cache: any) =>
 interface StreamingContextData {
   markCompletedQuery: () => void;
   markStartedQuery: () => void;
-  isHydrated: () => boolean;
+  hasStreamCompleted: () => boolean;
 }
 
 export const StreamingContext = React.createContext<StreamingContextData>({
   markCompletedQuery: () => {},
   markStartedQuery: () => {},
-  isHydrated: () => false,
+  hasStreamCompleted: () => false,
 });
 
 function StreamPipe({
   onCompletedAll,
+  hasAlreadyRanStreamPromise,
+  hasAtleastOneQueryStarted,
 }: {
   onCompletedAll: (fn: (client: ApolloClient<any>) => void) => void;
+  hasAlreadyRanStreamPromise: { current: boolean };
+  hasAtleastOneQueryStarted: { current: boolean };
 }) {
-  const alreadyRan = React.useRef(false);
   const insertHtml = React.useContext(ServerInsertedHTMLContext);
 
   React.use(
     typeof window === "undefined"
       ? new Promise((res) => {
-          if (alreadyRan.current) {
+          if (hasAlreadyRanStreamPromise.current) {
             return res(null);
           }
-          alreadyRan.current = true;
+          hasAlreadyRanStreamPromise.current = true;
+
+          setTimeout(() => {
+            if (!hasAtleastOneQueryStarted) {
+              return res(null);
+            }
+          }, 0);
 
           insertHtml?.(() =>
             React.createElement("script", {
@@ -87,36 +96,37 @@ export function ApolloProvider({
   client: ApolloClient<any>;
 }>) {
   const [restoredOnClient, setRestoredOnClient] = React.useState(false);
-  const hydratedOnClient = React.useRef(false);
+  const restoredOnClientRef = React.useRef(false);
   const [, transition] = React.useTransition();
 
+  const hasAlreadyRanStreamPromise = React.useRef(false);
+  const hasAtleastOneQueryStarted = React.useRef(false);
   const queryCount = React.useRef(0);
-  const queryStarted = React.useRef(false);
 
-  const completedListener = React.useRef<(client: ApolloClient<any>) => void>(
-    () => {}
-  );
+  const completedEventListener = React.useRef<
+    (client: ApolloClient<any>) => void
+  >(() => {});
 
   const contextValues = React.useMemo(() => {
     return {
       markCompletedQuery: () => {
         queryCount.current--;
         if (queryCount.current === 0) {
-          completedListener.current(client);
+          completedEventListener.current(client);
         }
       },
       markStartedQuery: () => {
         queryCount.current++;
-        queryStarted.current = true;
+        hasAtleastOneQueryStarted.current = true;
       },
-      isHydrated: () => hydratedOnClient.current,
+      hasStreamCompleted: () => restoredOnClientRef.current,
     };
   }, []);
 
   const { onCompletedAll } = React.useMemo(() => {
     return {
       onCompletedAll: (fn: (client: ApolloClient<any>) => void) => {
-        completedListener.current = fn;
+        completedEventListener.current = fn;
       },
     };
   }, []);
@@ -130,7 +140,7 @@ export function ApolloProvider({
         client.cache.restore(cache);
         transition(() => {
           setRestoredOnClient(true);
-          hydratedOnClient.current = true;
+          restoredOnClientRef.current = true;
         });
       });
     }
@@ -138,7 +148,11 @@ export function ApolloProvider({
 
   return (
     <StreamingContext.Provider value={contextValues}>
-      <StreamPipe onCompletedAll={onCompletedAll} />
+      <StreamPipe
+        onCompletedAll={onCompletedAll}
+        hasAlreadyRanStreamPromise={hasAlreadyRanStreamPromise}
+        hasAtleastOneQueryStarted={hasAtleastOneQueryStarted}
+      />
       <OrigninalApolloProvider
         key={restoredOnClient ? "0" : "1"}
         client={client}
